@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}</style>
+<title>The 28-Day Line</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+</head>
+<body>
+<style>
+:root{
+  --ground:#F5F6F3; --surface:#FCFCFB; --surface-2:#EFF1EC;
+  --ink:#141A17; --ink-2:#3D4A44; --muted:#5A6560; --faint:#8B958F;
+  --rule:#DDE2DC; --rule-strong:#C6CDC5;
+  --series-honest:#0C8F80; --series-leaked:#BE4A10;
+  --honest-soft:rgba(12,143,128,.12); --leaked-soft:rgba(190,74,16,.12);
+  --warn:#8A6512; --warn-soft:rgba(138,101,18,.12);
+  --shadow:0 1px 2px rgba(20,26,23,.05),0 8px 24px -12px rgba(20,26,23,.12);
+  --f-display:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --f-body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --f-label:"IBM Plex Sans Condensed","IBM Plex Sans",-apple-system,"Segoe UI",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --maxw:1080px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#101413; --surface:#171C1A; --surface-2:#1F2623;
+    --ink:#E7EDE9; --ink-2:#C2CCC7; --muted:#94A19B; --faint:#6E7B76;
+    --rule:#2A322E; --rule-strong:#3A443F;
+    --series-honest:#17A894; --series-leaked:#D9662A;
+    --honest-soft:rgba(23,168,148,.16); --leaked-soft:rgba(217,102,42,.16);
+    --warn:#C79A3A; --warn-soft:rgba(199,154,58,.16);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#101413; --surface:#171C1A; --surface-2:#1F2623;
+  --ink:#E7EDE9; --ink-2:#C2CCC7; --muted:#94A19B; --faint:#6E7B76;
+  --rule:#2A322E; --rule-strong:#3A443F;
+  --series-honest:#17A894; --series-leaked:#D9662A;
+  --honest-soft:rgba(23,168,148,.16); --leaked-soft:rgba(217,102,42,.16);
+  --warn:#C79A3A; --warn-soft:rgba(199,154,58,.16);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--f-body); font-size:15.5px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+h1,h2,h3{font-family:var(--f-display); text-wrap:balance; margin:0}
+h1{font-size:clamp(2.1rem,5vw,3.1rem); font-weight:600; line-height:1.08; letter-spacing:-.015em}
+h2{font-size:clamp(1.35rem,2.6vw,1.7rem); font-weight:600; letter-spacing:-.01em}
+h3{font-size:1.02rem; font-weight:600}
+p{margin:0 0 .85em}
+.prose{max-width:68ch}
+.eyebrow{
+  font-family:var(--f-label); font-weight:600; font-size:.72rem;
+  text-transform:uppercase; letter-spacing:.14em; color:var(--muted);
+}
+.num{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
+a{color:var(--series-honest)}
+:focus-visible{outline:2px solid var(--series-honest); outline-offset:3px; border-radius:3px}
+
+/* ---------- masthead ---------- */
+.masthead{border-bottom:1px solid var(--rule); background:var(--surface)}
+.masthead .wrap{padding-top:46px; padding-bottom:34px}
+.masthead .eyebrow{display:block; margin-bottom:14px}
+.deck{font-size:1.06rem; color:var(--ink-2); max-width:60ch; margin-top:16px}
+.scope{display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; padding:0; list-style:none}
+.scope li{
+  font-family:var(--f-mono); font-size:.76rem; color:var(--ink-2);
+  background:var(--surface-2); border:1px solid var(--rule);
+  padding:4px 10px; border-radius:2px; font-variant-numeric:tabular-nums;
+}
+
+/* ---------- sections ---------- */
+section{padding:52px 0; border-bottom:1px solid var(--rule)}
+.sec-head{margin-bottom:26px}
+.sec-head .eyebrow{display:block; margin-bottom:7px}
+.sec-head p{color:var(--muted); max-width:66ch; margin-top:8px; margin-bottom:0}
+
+/* ---------- stat tiles ---------- */
+.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(196px,1fr)); gap:1px;
+  background:var(--rule); border:1px solid var(--rule); border-radius:3px; overflow:hidden}
+.tile{background:var(--surface); padding:20px 20px 18px}
+.tile .k{font-family:var(--f-label); font-size:.7rem; text-transform:uppercase;
+  letter-spacing:.12em; color:var(--muted); display:block; margin-bottom:10px}
+.tile .v{font-family:var(--f-mono); font-size:2.1rem; font-weight:500;
+  line-height:1; font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+.tile .s{font-size:.84rem; color:var(--muted); margin-top:9px; display:block}
+.v.honest{color:var(--series-honest)} .v.leaked{color:var(--series-leaked)}
+
+/* ---------- panels ---------- */
+.panel{background:var(--surface); border:1px solid var(--rule); border-radius:3px;
+  padding:24px; box-shadow:var(--shadow)}
+.split{display:grid; grid-template-columns:1.35fr 1fr; gap:22px; align-items:start}
+@media (max-width:820px){ .split{grid-template-columns:1fr} }
+
+/* ---------- charts ---------- */
+.chart-title{font-family:var(--f-label); font-size:.76rem; text-transform:uppercase;
+  letter-spacing:.12em; color:var(--muted); margin-bottom:4px}
+.chart-sub{font-size:.84rem; color:var(--faint); margin-bottom:16px}
+.legend{display:flex; gap:16px; margin:0 0 16px; padding:0; list-style:none;
+  font-size:.82rem; color:var(--ink-2)}
+.legend li{display:flex; align-items:center; gap:7px}
+.swatch{width:11px; height:11px; border-radius:2px; flex:none}
+svg{display:block; width:100%; height:auto; overflow:visible}
+.grid-line{stroke:var(--rule); stroke-width:1}
+.axis-txt{font-family:var(--f-mono); font-size:10.5px; fill:var(--faint)}
+.mark-lbl{font-family:var(--f-mono); font-size:11px; fill:var(--ink-2); font-variant-numeric:tabular-nums}
+.cat-lbl{font-family:var(--f-body); font-size:12.5px; fill:var(--ink-2)}
+.hit{fill:transparent; cursor:default}
+.bar{transition:opacity .12s ease}
+.dim .bar:not(.on){opacity:.32}
+
+#tip{position:fixed; z-index:50; pointer-events:none; opacity:0; transition:opacity .1s ease;
+  background:var(--ink); color:var(--ground); font-size:.78rem; line-height:1.45;
+  padding:7px 10px; border-radius:3px; max-width:230px; box-shadow:var(--shadow)}
+#tip .tk{font-family:var(--f-label); text-transform:uppercase; letter-spacing:.1em;
+  font-size:.64rem; opacity:.72; display:block}
+#tip .tv{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto; margin-top:4px}
+table{border-collapse:collapse; width:100%; font-size:.87rem; min-width:460px}
+caption{text-align:left; font-family:var(--f-label); font-size:.72rem; text-transform:uppercase;
+  letter-spacing:.12em; color:var(--muted); padding-bottom:10px}
+th,td{padding:9px 12px; text-align:right; border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+thead th{font-family:var(--f-label); font-weight:600; font-size:.74rem; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--muted); border-bottom:1px solid var(--rule-strong)}
+tbody td{font-family:var(--f-mono); font-variant-numeric:tabular-nums; color:var(--ink-2)}
+tbody td:first-child{font-family:var(--f-body); color:var(--ink)}
+tbody tr:last-child td{border-bottom:none}
+tr.best td{background:var(--honest-soft)}
+tr.best td:first-child{font-weight:600; box-shadow:inset 3px 0 0 var(--series-honest)}
+.dn{color:var(--series-leaked)} .up{color:var(--series-honest)}
+
+/* ---------- evidence list ---------- */
+.ev{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px}
+.ev li{display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:baseline}
+.ev b{font-family:var(--f-mono); font-size:1.22rem; font-weight:500; color:var(--series-leaked);
+  font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+.ev span{font-size:.88rem; color:var(--ink-2); line-height:1.45}
+
+/* ---------- phases ---------- */
+.phases{list-style:none; margin:0; padding:0; counter-reset:p}
+.phases li{display:grid; grid-template-columns:auto 1fr; gap:18px; padding:15px 0;
+  border-bottom:1px solid var(--rule)}
+.phases li:last-child{border-bottom:none}
+.phases .pn{font-family:var(--f-mono); font-size:.76rem; color:var(--faint);
+  padding-top:2px; white-space:nowrap}
+.phases h3{margin-bottom:3px}
+.phases p{margin:0; font-size:.89rem; color:var(--muted); max-width:64ch}
+
+/* ---------- caveats ---------- */
+.cav{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px}
+.cav li{background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--warn);
+  border-radius:0 3px 3px 0; padding:15px 18px}
+.cav li.hi{border-left-color:var(--series-leaked)}
+.chip{display:inline-block; font-family:var(--f-label); font-size:.66rem; text-transform:uppercase;
+  letter-spacing:.11em; padding:2px 8px; border-radius:2px; margin-bottom:7px;
+  background:var(--warn-soft); color:var(--warn)}
+.cav li.hi .chip{background:var(--leaked-soft); color:var(--series-leaked)}
+.cav h3{font-size:.96rem; margin-bottom:4px}
+.cav p{margin:0; font-size:.89rem; color:var(--ink-2)}
+.cav code{font-family:var(--f-mono); font-size:.86em; background:var(--surface-2);
+  padding:1px 5px; border-radius:2px}
+
+footer{padding:34px 0 56px; color:var(--faint); font-size:.82rem}
+footer p{max-width:70ch}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+</style>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<header class="masthead">
+  <div class="wrap">
+    <span class="eyebrow">Working with AI · Sports Analytics · IIM Ranchi</span>
+    <h1>The 28-Day Line</h1>
+    <p class="deck">Predicting which football injuries put a player out for a month or more —
+      and what happened when the model's best feature turned out to contain the answer.</p>
+    <ul class="scope">
+      <li>15,603 injuries</li>
+      <li>4,081 players</li>
+      <li>5 leagues</li>
+      <li>2020–2025</li>
+      <li>severe = 28+ days out</li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Headline</span>
+      <h2>Where it landed</h2>
+      <p>Final figures come from the leakage-corrected model. The earlier, higher numbers are
+        reported alongside as the finding, not as the result.</p>
+    </div>
+    <div class="tiles">
+      <div class="tile">
+        <span class="k">Best model</span>
+        <span class="v honest" style="font-size:1.5rem">XGBoost</span>
+        <span class="s">max_depth 3, lr 0.05</span>
+      </div>
+      <div class="tile">
+        <span class="k">Test ROC-AUC</span>
+        <span class="v honest">0.747</span>
+        <span class="s">was 0.801 before the repair</span>
+      </div>
+      <div class="tile">
+        <span class="k">Recall on severe</span>
+        <span class="v honest">0.704</span>
+        <span class="s">precision 0.526 — nearly half of flags are false alarms</span>
+      </div>
+      <div class="tile">
+        <span class="k">AUC removed as leak</span>
+        <span class="v leaked">−0.054</span>
+        <span class="s">never real predictive skill</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">The finding</span>
+      <h2>The best feature contained the answer</h2>
+      <p>Five features described each player's injury history, built by aggregating their whole
+        Transfermarkt record. That record overlaps the seasons being predicted — so the
+        aggregate averaged in the very injury the model was asked to classify.</p>
+    </div>
+
+    <div class="split">
+      <div class="panel">
+        <div class="chart-title">Correlation with severity, before and after</div>
+        <div class="chart-sub">Absolute Pearson correlation against <span class="num">severe_injury</span>.
+          Each feature rebuilt using only injuries starting strictly earlier.</div>
+        <ul class="legend">
+          <li><span class="swatch" style="background:var(--series-leaked)"></span>Career aggregate (leaked)</li>
+          <li><span class="swatch" style="background:var(--series-honest)"></span>As-of injury date</li>
+        </ul>
+        <svg id="c-leak" role="img" aria-label="Dumbbell chart: correlation with severity falls sharply for all five history features once rebuilt as-of the injury date"></svg>
+      </div>
+
+      <div class="panel">
+        <div class="chart-title">Why it happened</div>
+        <div class="chart-sub">Evidence from the raw Transfermarkt file.</div>
+        <ul class="ev">
+          <li><b>50.9%</b><span>of the 143,173 career injury records sit <em>inside</em> the 2020–25 window being predicted</span></li>
+          <li><b>54%</b><span>of players have <em>all</em> of their recorded history inside that window</span></li>
+          <li><b>3</b><span>median career injuries per player — so one row is a third of its own feature</span></li>
+          <li><b>79%</b><span>of <span class="num">avg_days_missed</span>'s apparent signal disappeared once the leak was removed</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:22px">
+      <div class="tw">
+        <table>
+          <caption>History features — leaked vs as-of</caption>
+          <thead><tr><th>Feature</th><th>corr (leaked)</th><th>corr (as-of)</th><th>Signal lost</th></tr></thead>
+          <tbody id="t-leak"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Results</span>
+      <h2>Three models, honestly scored</h2>
+      <p>Same split, same grids, same seed. Only the five history features changed, so every
+        point of difference is the leak coming out.</p>
+    </div>
+
+    <div class="panel">
+      <div class="chart-title">Test ROC-AUC by model</div>
+      <div class="chart-sub">Group-aware split — 11,697 train / 3,906 test, no player on both sides.</div>
+      <ul class="legend">
+        <li><span class="swatch" style="background:var(--series-leaked)"></span>Leaked (Phase 5)</li>
+        <li><span class="swatch" style="background:var(--series-honest)"></span>As-of (Phase 5b)</li>
+      </ul>
+      <svg id="c-auc" role="img" aria-label="Grouped bar chart: AUC falls from about 0.80 to about 0.74 for all three models once the leak is removed"></svg>
+    </div>
+
+    <div class="panel" style="margin-top:22px">
+      <div class="tw">
+        <table>
+          <caption>Full metrics — corrected model</caption>
+          <thead><tr><th>Model</th><th>Recall</th><th>F1</th><th>AUC</th><th>Δ AUC</th></tr></thead>
+          <tbody id="t-mod"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="prose" style="margin-top:22px; color:var(--ink-2)">
+      The three models finish within <span class="num">0.006</span> AUC of each other —
+      statistically indistinguishable. Before the repair, XGBoost appeared to beat logistic
+      regression by 2.5 points. Tree ensembles exploit leaked features more effectively than a
+      linear model does, so removing the leak removed most of their apparent advantage. Phase 4
+      predicted logistic regression would place last on non-linearity grounds; it does, but by a
+      margin too small to claim as a vindicated prediction.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Drivers</span>
+      <h2>Diagnosis beats history</h2>
+      <p>Mean absolute SHAP value, XGBoost on the corrected feature set. Before the repair this
+        ranking was led by <span class="num">avg_days_missed</span> at 0.69 — nearly seven times
+        what it scores now.</p>
+    </div>
+    <div class="panel">
+      <div class="chart-title">Feature importance — corrected model</div>
+      <div class="chart-sub">Top 10 of 51 features. Higher means more influence on the prediction.</div>
+      <svg id="c-shap" role="img" aria-label="Horizontal bar chart: injury type features dominate, led by is_illness and injury_category_other, with prior-history features far below"></svg>
+    </div>
+    <p class="prose" style="margin-top:22px; color:var(--ink-2)">
+      What kind of injury it is predicts severity; who the player is barely does. The chi-square
+      test agrees — injury category scores <span class="num">2165.6</span> against severity, an
+      order of magnitude above position (<span class="num">24.7</span>) or league
+      (<span class="num">235.7</span>). For a medical department that argues for triage by
+      diagnosis at the point of assessment, rather than flagging players with long injury records.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Method</span>
+      <h2>How it was built</h2>
+      <p>Each phase produced a check that constrained the next one.</p>
+    </div>
+    <ol class="phases">
+      <li><span class="pn">01–02</span><div>
+        <h3>Merge and clean</h3>
+        <p>Primary injury records joined to Transfermarkt profiles on player name. Stripping the
+          trailing numeric id from Transfermarkt names took the match rate from 0% to 97.2%.</p>
+      </div></li>
+      <li><span class="pn">03</span><div>
+        <h3>Exploratory analysis</h3>
+        <p>Fractures are the most severe category at 72.0% severe. The Premier League is the
+          riskiest at 45.2%. Hamstring injuries are the most common single type at 1,256 cases.</p>
+      </div></li>
+      <li><span class="pn">04</span><div>
+        <h3>Assumptions and diagnostics</h3>
+        <p>Dropped <span class="num">days_numeric</span>, <span class="num">games_missed</span> and
+          two target-encoded rate features as leakage. Dropped
+          <span class="num">age_squared</span> and <span class="num">total_days_missed</span> for
+          collinearity. Flagged that rows are not independent — 15,603 injuries across 4,081 players.</p>
+      </div></li>
+      <li><span class="pn">05</span><div>
+        <h3>Modelling</h3>
+        <p>Grouped split on player, <span class="num">StratifiedGroupKFold</span> for tuning, and
+          class weighting rather than SMOTE — at 1.8:1 the imbalance is mild enough that
+          synthesising minority rows would add distortion without adding information.</p>
+      </div></li>
+      <li><span class="pn">05b</span><div>
+        <h3>Leakage repair</h3>
+        <p>History features rebuilt with an as-of join that admits only injuries starting strictly
+          before the row being scored. 12.5% of rows have no prior injury on record and correctly
+          receive zero — a genuine first-recorded-injury signal.</p>
+      </div></li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Open items</span>
+      <h2>What still needs fixing</h2>
+      <p>Stated here rather than left for a reader to find.</p>
+    </div>
+    <ul class="cav">
+      <li class="hi">
+        <span class="chip">Residual leak</span>
+        <h3>One feature still looks ahead</h3>
+        <p><code>injuries_in_dataset</code> counts a player's injuries across the whole 2020–25
+          window, so it uses rows from after the prediction point. It ranks third in the driver
+          chart. Milder than what was repaired — it counts injuries without encoding their
+          outcomes — but it should be made as-of or dropped.</p>
+      </li>
+      <li class="hi">
+        <span class="chip">Error in write-up</span>
+        <h3>The injury-history insight is stated backwards</h3>
+        <p>The Phase 3 summary reads "players with prior injuries show higher severe injury rates".
+          The data says the opposite: median prior injuries are 10 for severe cases against 12 for
+          non-severe, and the correlation is negative at −0.11. Players who accumulate many
+          recorded injuries accumulate mostly minor ones.</p>
+      </li>
+      <li>
+        <span class="chip">Stale</span>
+        <h3>Threshold tuning predates the repair</h3>
+        <p>The decision-threshold sweep was run against the leaked model, where 0.49 was optimal
+          for XGBoost. It needs re-running on the corrected model — and ideally on a validation
+          fold rather than the test set, which makes the tuned figure mildly optimistic.</p>
+      </li>
+      <li>
+        <span class="chip">Scope</span>
+        <h3>Name matching is imperfect</h3>
+        <p>97.2% of rows link to a Transfermarkt id. The remaining 2.8% receive zeros for every
+          history feature, which is indistinguishable from a genuine absence of prior injuries.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Figures read directly from the executed notebook. Severity is defined as 28 or more days
+      out. All model metrics are on the held-out test set of 3,906 injuries, split by player so
+      that no individual appears in both training and test data.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var LEAK = [
+    {f:"avg_days_missed",       old:0.268, neu:0.056, sign:"+"},
+    {f:"max_days_missed",       old:0.151, neu:0.052, sign:"+"},
+    {f:"total_games_missed",    old:0.130, neu:0.043, sign:"+"},
+    {f:"distinct_injury_types", old:0.118, neu:0.041, sign:"−"},
+    {f:"total_injuries",        old:0.112, neu:0.034, sign:"−"}
+  ];
+  var MOD = [
+    {m:"XGBoost",             rec:0.7039, f1:0.6019, auc:0.7472, oldAuc:0.8012},
+    {m:"Random Forest",       rec:0.6776, f1:0.5994, auc:0.7435, oldAuc:0.7921},
+    {m:"Logistic Regression", rec:0.6981, f1:0.6001, auc:0.7417, oldAuc:0.7758}
+  ];
+  var SHAP = [
+    {f:"is_illness",             v:0.48},
+    {f:"injury_category_other",  v:0.33},
+    {f:"injuries_in_dataset",    v:0.19},
+    {f:"is_knee",                v:0.14},
+    {f:"injury_category_bruise", v:0.11},
+    {f:"avg_days_missed_prior",  v:0.10},
+    {f:"season_num",             v:0.09},
+    {f:"league_Premier League",  v:0.08},
+    {f:"player_age",             v:0.08},
+    {f:"league_Serie A",         v:0.08}
+  ];
+
+  var NS = "http://www.w3.org/2000/svg";
+  function el(n,a){ var e=document.createElementNS(NS,n); for(var k in a){ e.setAttribute(k,a[k]); } return e; }
+  function fmt(x,d){ return (x<0?"−":"")+Math.abs(x).toFixed(d==null?3:d); }
+
+  /* ---- shared tooltip ---- */
+  var tip=document.getElementById("tip");
+  function showTip(e,k,v){
+    tip.innerHTML='<span class="tk"></span><span class="tv"></span>';
+    tip.firstChild.textContent=k; tip.lastChild.textContent=v;
+    tip.style.opacity="1"; moveTip(e);
+  }
+  function moveTip(e){
+    var w=tip.offsetWidth, h=tip.offsetHeight;
+    var x=e.clientX+14, y=e.clientY-h-10;
+    if(x+w>window.innerWidth-8) x=e.clientX-w-14;
+    if(y<8) y=e.clientY+18;
+    tip.style.left=x+"px"; tip.style.top=y+"px";
+  }
+  function hideTip(){ tip.style.opacity="0"; }
+  function bindTip(node,k,v){
+    node.addEventListener("mouseenter",function(e){ showTip(e,k,v); });
+    node.addEventListener("mousemove",moveTip);
+    node.addEventListener("mouseleave",hideTip);
+  }
+
+  /* ---- 1. dumbbell: leaked vs as-of correlation ---- */
+  (function(){
+    var svg=document.getElementById("c-leak");
+    var W=560, rowH=46, padT=26, padB=34, L=168, R=54;
+    var H=padT+LEAK.length*rowH+padB;
+    svg.setAttribute("viewBox","0 0 "+W+" "+H);
+    var max=0.30, x0=L, x1=W-R;
+    function X(v){ return x0+(v/max)*(x1-x0); }
+
+    [0,0.1,0.2,0.3].forEach(function(t){
+      svg.appendChild(el("line",{x1:X(t),x2:X(t),y1:padT-8,y2:H-padB+4,class:"grid-line"}));
+      var tx=el("text",{x:X(t),y:H-padB+18,class:"axis-txt","text-anchor":"middle"});
+      tx.textContent=t.toFixed(1); svg.appendChild(tx);
+    });
+    var ax=el("text",{x:(x0+x1)/2,y:H-padB+33,class:"axis-txt","text-anchor":"middle"});
+    ax.textContent="| correlation with severity |"; svg.appendChild(ax);
+
+    LEAK.forEach(function(d,i){
+      var y=padT+i*rowH+rowH/2;
+      var lb=el("text",{x:L-14,y:y+4,class:"cat-lbl","text-anchor":"end"});
+      lb.textContent=d.f; svg.appendChild(lb);
+
+      svg.appendChild(el("line",{x1:X(d.neu),x2:X(d.old),y1:y,y2:y,
+        stroke:"var(--rule-strong)","stroke-width":2,"stroke-linecap":"round"}));
+
+      [["neu","var(--series-honest)","As-of"],["old","var(--series-leaked)","Career aggregate"]]
+      .forEach(function(s){
+        var c=el("circle",{cx:X(d[s[0]]),cy:y,r:6,fill:s[1],
+          stroke:"var(--surface)","stroke-width":2});
+        svg.appendChild(c);
+        var hit=el("circle",{cx:X(d[s[0]]),cy:y,r:13,class:"hit"});
+        bindTip(hit, s[2]+" · "+d.f, d.sign+fmt(d[s[0]]));
+        svg.appendChild(hit);
+      });
+
+      var vr=el("text",{x:X(d.old)+13,y:y+4,class:"mark-lbl"});
+      vr.textContent=fmt(d.old); svg.appendChild(vr);
+      var vlft=el("text",{x:X(d.neu)-13,y:y+4,class:"mark-lbl","text-anchor":"end",
+        fill:"var(--series-honest)"});
+      vlft.textContent=fmt(d.neu); svg.appendChild(vlft);
+    });
+  })();
+
+  /* ---- 2. slopegraph: AUC before -> after, by model ----
+     A slopegraph, not bars: the axis does not start at zero (AUC 0.5 is chance,
+     not 0), and position rather than bar length carries the value. It also shows
+     the three models converging, which bars would hide. */
+  (function(){
+    var svg=document.getElementById("c-auc");
+    var W=640, H=330, padT=30, padB=52, L=58, R=190;
+    svg.setAttribute("viewBox","0 0 "+W+" "+H);
+    var y0=H-padB, y1=padT, lo=0.73, hi=0.81;
+    var xA=L+70, xB=W-R;
+    function Y(v){ return y0-((v-lo)/(hi-lo))*(y0-y1); }
+
+    [0.73,0.75,0.77,0.79,0.81].forEach(function(t){
+      svg.appendChild(el("line",{x1:L,x2:xB+14,y1:Y(t),y2:Y(t),class:"grid-line"}));
+      var tx=el("text",{x:L-12,y:Y(t)+4,class:"axis-txt","text-anchor":"end"});
+      tx.textContent=t.toFixed(2); svg.appendChild(tx);
+    });
+
+    [[xA,"Leaked"],[xB,"As-of"]].forEach(function(c){
+      var t=el("text",{x:c[0],y:padT-14,class:"axis-txt","text-anchor":"middle"});
+      t.textContent=c[1].toUpperCase(); svg.appendChild(t);
+    });
+
+    MOD.forEach(function(d){
+      svg.appendChild(el("line",{x1:xA,x2:xB,y1:Y(d.oldAuc),y2:Y(d.auc),
+        stroke:"var(--rule-strong)","stroke-width":2,"stroke-linecap":"round"}));
+
+      [[xA,d.oldAuc,"var(--series-leaked)","Leaked"],
+       [xB,d.auc,"var(--series-honest)","As-of"]].forEach(function(s){
+        svg.appendChild(el("circle",{cx:s[0],cy:Y(s[1]),r:6,fill:s[2],
+          stroke:"var(--surface)","stroke-width":2}));
+        var hit=el("circle",{cx:s[0],cy:Y(s[1]),r:14,class:"hit"});
+        bindTip(hit, s[3]+" · "+d.m, "AUC "+s[1].toFixed(4));
+        svg.appendChild(hit);
+      });
+
+      var lv=el("text",{x:xA-14,y:Y(d.oldAuc)+4,class:"mark-lbl","text-anchor":"end",
+        fill:"var(--series-leaked)"});
+      lv.textContent=d.oldAuc.toFixed(3); svg.appendChild(lv);
+    });
+
+    /* The three corrected scores sit within 0.006 of each other, so their labels
+       would overlap. Spread them to a minimum gap and run a leader to each dot. */
+    var GAP=17;
+    var rows=MOD.map(function(d){ return {d:d, y:Y(d.auc)}; })
+                .sort(function(a,b){ return a.y-b.y; });
+    for(var i=1;i<rows.length;i++){
+      if(rows[i].y-rows[i-1].y < GAP) rows[i].y = rows[i-1].y + GAP;
+    }
+    var shift=(rows[rows.length-1].y-rows[0].y-(Y(MOD[MOD.length-1].auc)-Y(MOD[0].auc)))/2;
+    rows.forEach(function(r){ r.y-=shift; });
+
+    rows.forEach(function(r){
+      var dotY=Y(r.d.auc);
+      svg.appendChild(el("path",{
+        d:"M"+(xB+7)+" "+dotY+" L"+(xB+13)+" "+dotY+" L"+(xB+19)+" "+r.y+" L"+(xB+25)+" "+r.y,
+        fill:"none", stroke:"var(--rule-strong)", "stroke-width":1}));
+      var rv=el("text",{x:xB+30,y:r.y+4,class:"mark-lbl"});
+      rv.textContent=r.d.auc.toFixed(3); svg.appendChild(rv);
+      var rn=el("text",{x:xB+78,y:r.y+4,class:"cat-lbl"});
+      rn.textContent=r.d.m; svg.appendChild(rn);
+    });
+
+    var note=el("text",{x:xB+16,y:y0+30,class:"axis-txt"});
+    note.textContent="all three within 0.006"; svg.appendChild(note);
+  })();
+
+  /* ---- 3. horizontal bars: SHAP ---- */
+  (function(){
+    var svg=document.getElementById("c-shap");
+    var W=620, rowH=27, padT=10, padB=36, L=196, R=48;
+    var H=padT+SHAP.length*rowH+padB;
+    svg.setAttribute("viewBox","0 0 "+W+" "+H);
+    var max=0.5, x0=L, x1=W-R;
+    function X(v){ return x0+(v/max)*(x1-x0); }
+
+    [0,0.1,0.2,0.3,0.4,0.5].forEach(function(t){
+      svg.appendChild(el("line",{x1:X(t),x2:X(t),y1:padT-2,y2:H-padB+4,class:"grid-line"}));
+      var tx=el("text",{x:X(t),y:H-padB+18,class:"axis-txt","text-anchor":"middle"});
+      tx.textContent=t.toFixed(1); svg.appendChild(tx);
+    });
+    var ax=el("text",{x:(x0+x1)/2,y:H-padB+32,class:"axis-txt","text-anchor":"middle"});
+    ax.textContent="mean | SHAP value |"; svg.appendChild(ax);
+
+    SHAP.forEach(function(d,i){
+      var y=padT+i*rowH, bh=rowH-8;
+      var lb=el("text",{x:L-13,y:y+bh/2+4,class:"cat-lbl","text-anchor":"end"});
+      lb.textContent=d.f; svg.appendChild(lb);
+      var w=X(d.v)-x0;
+      var r=el("rect",{x:x0,y:y,width:w,height:bh,rx:4,ry:4,
+        fill:"var(--series-honest)",class:"bar"});
+      svg.appendChild(r);
+      svg.appendChild(el("rect",{x:x0,y:y,width:Math.min(5,w),height:bh,fill:"var(--series-honest)"}));
+      var vl=el("text",{x:X(d.v)+10,y:y+bh/2+4,class:"mark-lbl"});
+      vl.textContent=d.v.toFixed(2); svg.appendChild(vl);
+      var hit=el("rect",{x:x0,y:y-3,width:x1-x0,height:rowH,class:"hit"});
+      bindTip(hit, d.f, "mean |SHAP| "+d.v.toFixed(2));
+      svg.appendChild(hit);
+    });
+  })();
+
+  /* ---- tables ---- */
+  (function(){
+    var tb=document.getElementById("t-leak"), h="";
+    LEAK.forEach(function(d){
+      var lost=Math.round((1-d.neu/d.old)*100);
+      h+="<tr><td>"+d.f+"</td><td>"+d.sign+d.old.toFixed(3)+"</td><td>"+d.sign+
+         d.neu.toFixed(3)+"</td><td class='dn'>"+lost+"%</td></tr>";
+    });
+    tb.innerHTML=h;
+
+    var tm=document.getElementById("t-mod"), h2="";
+    MOD.forEach(function(d,i){
+      h2+="<tr"+(i===0?" class='best'":"")+"><td>"+d.m+"</td><td>"+d.rec.toFixed(4)+
+          "</td><td>"+d.f1.toFixed(4)+"</td><td>"+d.auc.toFixed(4)+
+          "</td><td class='dn'>−"+(d.oldAuc-d.auc).toFixed(4)+"</td></tr>";
+    });
+    tm.innerHTML=h2;
+  })();
+})();
+</script>
+
+</body>
+</html>

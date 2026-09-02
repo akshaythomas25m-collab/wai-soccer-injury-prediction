@@ -1,0 +1,13 @@
+# Pinned to the versions the reported results were produced with
+# (Google Colab, Python 3.13.15, 31 August 2026).
+pandas==2.2.3
+numpy==2.1.3
+scikit-learn==1.6.1
+xgboost==3.4.1
+imbalanced-learn==0.14.2
+shap==0.52.0
+matplotlib==3.10.0
+seaborn==0.13.2
+scipy>=1.14
+statsmodels>=0.14
+textblob>=0.18
