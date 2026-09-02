@@ -1,0 +1,44 @@
+{
+ "categories": [
+  "ankle_foot",
+  "back",
+  "bruise",
+  "fracture",
+  "head",
+  "illness",
+  "knee",
+  "ligament",
+  "muscular",
+  "other",
+  "surgery",
+  "upper_body"
+ ],
+ "leagues": [
+  "Bundesliga",
+  "La Liga",
+  "Ligue 1",
+  "Premier League",
+  "Serie A"
+ ],
+ "positions": [
+  "Attacking Midfield",
+  "Central Midfield",
+  "Centre-Back",
+  "Defensive Midfield",
+  "Forward",
+  "Goalkeeper",
+  "Left Midfield",
+  "Left Winger",
+  "Left-Back",
+  "Right Midfield",
+  "Right Winger",
+  "Right-Back",
+  "Second Striker"
+ ],
+ "phases": [
+  "early",
+  "mid",
+  "late",
+  "off_season"
+ ]
+}
